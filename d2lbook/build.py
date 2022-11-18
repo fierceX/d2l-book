@@ -309,20 +309,37 @@ class Builder(object):
 
     @_once
     def rst(self):
-        if self.config.tab == 'all':
-            self.merge()
-        else:
-            self.eval()
-        notebooks = find_files(
-            os.path.join(self.config.eval_dir, '**', '*.ipynb'))
-        updated_notebooks = get_updated_files(notebooks, self.config.eval_dir,
-                                              self.config.rst_dir, 'ipynb',
-                                              'rst')
+        # if self.config.tab == 'all':
+        #     self.merge()
+        # else:
+        #     self.eval()
+
+        notebooks, pure_markdowns, depends = self._find_md_files()
+        print(notebooks)
+        depends_mtimes = get_mtimes(depends)
+        latest_depend = max(depends_mtimes) if len(depends_mtimes) else 0
+        updated_notebooks = get_updated_files(notebooks, self.config.src_dir,
+                                              self.config.rst_dir, 'md',
+                                              'rst', latest_depend)
+
+
+
+        # notebooks = find_files(
+        #     os.path.join(self.config.eval_dir, '**', '*.ipynb'))
+        # updated_notebooks = get_updated_files(notebooks, self.config.eval_dir,
+        #                                       self.config.rst_dir, 'ipynb',
+        #                                       'rst')
         logging.info('%d rst files are outdated', len(updated_notebooks))
         for src, tgt in updated_notebooks:
             logging.info('Convert %s to %s', src, tgt)
             mkdir(os.path.dirname(tgt))
-            ipynb2rst(src, tgt)
+            # ipynb2rst(src, tgt)
+            subprocess.run('pandoc {0} --columns 10000 -o {1}'.format(src,tgt),shell=True)
+            with open(tgt, 'r') as f:
+                tgts = f.read()
+            body = rst_lib._process_rst(tgts)
+            with open(tgt,'w') as f:
+                f.write(body)
         # Generate conf.py under rst folder
         prepare_sphinx_env(self.config)
         self._copy_rst()
