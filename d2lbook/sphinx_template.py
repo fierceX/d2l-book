@@ -87,6 +87,8 @@ latex_logo = 'LATEX_LOGO'
 
 epub_show_urls = 'footnote'
 
+latex_table_style = 'booktabs'
+
 latex_elements = {
 
 'figure_align': 'H',
