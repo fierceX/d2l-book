@@ -85,6 +85,8 @@ latex_show_urls = 'footnote'
 
 latex_logo = 'LATEX_LOGO'
 
+epub_show_urls = 'footnote'
+
 latex_elements = {
 
 'figure_align': 'H',

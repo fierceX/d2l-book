@@ -33,6 +33,8 @@ class SphinxEnv(object):
         extensions.extend(self.config.build['sphinx_extensions'].split())
         self._update_pyconf('extensions', ','.join('"'+ext+'"' for ext in extensions))
         self._update_pyconf('bibfile', self.config.pdf['bibfile'])
+        self._update_pyconf('epub_show_urls', self.config.epub['epub_show_urls'])
+        
         for font in ['main_font', 'sans_font', 'mono_font']:
             font_value = ''
             if self.config.pdf[font]:

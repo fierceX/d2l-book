@@ -28,7 +28,7 @@ from d2lbook import resource
 __all__ = ['build']
 
 commands = [
-    'eval', 'rst', 'html', 'pdf', 'pkg', 'linkcheck', 'ipynb', 'slides',
+    'eval', 'rst', 'html', 'pdf','epub', 'pkg', 'linkcheck', 'ipynb', 'slides',
     'outputcheck', 'tabcheck', 'lib', 'colab', 'sagemaker', 'all', 'merge']
 
 def build():
@@ -356,8 +356,8 @@ class Builder(object):
     @_once
     def html(self):
         self.rst()
-        self.colab()
-        self.sagemaker()
+        # self.colab()
+        # self.sagemaker()
         run_cmd([
             'sphinx-build', self.config.rst_dir, self.config.html_dir,
             '-b html -c', self.config.rst_dir, self.sphinx_opts])
@@ -418,6 +418,21 @@ class Builder(object):
         if self.config.tab != self.config.default_tab:
             p = self.config.project['name']
             run_cmd(['cd', self.config.pdf_dir, '&& cp ', p+'.pdf', p+'-'+self.config.tab+'.pdf' ])
+
+    @_once
+    def epub(self):
+        self.rst()
+        run_cmd([
+            'sphinx-build ', self.config.rst_dir, self.config.epub_dir,
+            '-b epub -c', self.config.rst_dir, self.sphinx_opts])
+
+        # script = self.config.pdf['post_latex']
+        # process_latex(self.config.tex_fname, script)
+        # run_cmd(['cd', self.config.pdf_dir, '&& make'])
+        # if self.config.tab != self.config.default_tab:
+        #     p = self.config.project['name']
+        #     run_cmd(['cd', self.config.epub_dir, '&& cp ', p+'.pdf', p+'-'+self.config.tab+'.pdf' ])
+
 
     @_once
     def pkg(self):

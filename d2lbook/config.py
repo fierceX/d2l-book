@@ -25,6 +25,7 @@ class Config():
         self.project = config['project']
         self.html = config['html']
         self.pdf = config['pdf']
+        self.epub = config['epub']
         self.slides = config['slides']
         self.library = dict(config['library'].items())
         for tab in self.tabs:
@@ -45,6 +46,7 @@ class Config():
             self.html_dir = os.path.join(self.tgt_dir, 'html')
         # MM20200104 changed to allow separate html_dir to be specified in config.ini, e.g. put 'html_dir = docs' in the [build] section
         self.pdf_dir = os.path.join(self.tgt_dir, 'pdf')
+        self.epub_dir = os.path.join(self.tgt_dir, 'epub')
         self.colab_dir = os.path.join(self.tgt_dir, 'colab')
         self.sagemaker_dir = os.path.join(self.tgt_dir, 'sagemaker')
         self.linkcheck_dir = os.path.join(self.tgt_dir, 'linkcheck')
