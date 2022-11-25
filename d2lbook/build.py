@@ -407,7 +407,7 @@ class Builder(object):
 
     @_once
     def pdf(self):
-        # self.rst()
+        self.rst()
         run_cmd([
             'sphinx-build ', self.config.rst_dir, self.config.pdf_dir,
             '-b latex -c', self.config.rst_dir, self.sphinx_opts])
